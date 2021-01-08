@@ -179,11 +179,9 @@ set(
     "${mw320_dir}/sdk/src/boards"
     "${mw320_dir}/sdk/src/incl/platform/net/freertos-plus-tcp"
     "${AFR_KERNEL_DIR}/portable/GCC/ARM_CM4F"
-    "${AFR_ROOT_DIR}/libraries/3rdparty/mbedtls/include/"
-    "${AFR_ROOT_DIR}/libraries/3rdparty/mbedtls/include/mbedtls/"
     "${mw320_dir}/sdk/src/incl/platform/os/freertos"
     "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/include"
-    "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/source/portable/Compiler/GCC"
+    "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/portable/Compiler/GCC"
     "$<IF:${AFR_IS_TESTING},${AFR_TESTS_DIR},${AFR_DEMOS_DIR}>/include"
 )
 
@@ -202,6 +200,8 @@ target_include_directories(
      ${kernel_inc_lib_directories}
 )
 
+target_link_libraries(AFR::kernel::mcu_port INTERFACE 3rdparty::mbedtls)
+
 # WiFi
 afr_mcu_port(wifi)
 target_sources(
@@ -214,8 +214,11 @@ afr_mcu_port(freertos_plus_tcp)
 target_sources(
     AFR::freertos_plus_tcp::mcu_port
     INTERFACE
-        "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/source/portable/BufferManagement/BufferAllocation_2.c"
-        "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/source/portable/NetworkInterface/mw300_rd/NetworkInterface.c"
+        "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/portable/BufferManagement/BufferAllocation_2.c"
+        "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/portable/NetworkInterface/mw300_rd/NetworkInterface.c"
+        # Header files added to the target so that these are available in code downloaded from the FreeRTOS console.
+        "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/portable/Compiler/GCC/pack_struct_end.h"
+        "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/freertos_plus_tcp/portable/Compiler/GCC/pack_struct_start.h"
 )
 
 # PKCS11
@@ -226,26 +229,20 @@ target_link_libraries(
 )
 target_sources(
     AFR::pkcs11_implementation::mcu_port
-    INTERFACE "${afr_ports_dir}/pkcs11/iot_pkcs11_pal.c"
+    INTERFACE "${afr_ports_dir}/pkcs11/core_pkcs11_pal.c"
 )
 
 # Secure sockets
 afr_mcu_port(secure_sockets)
 target_link_libraries(
     AFR::secure_sockets::mcu_port
-    INTERFACE AFR::secure_sockets_freertos_plus_tcp
+    INTERFACE 
+        AFR::secure_sockets_freertos_plus_tcp
+        AFR::pkcs11_mbedtls
 )
 target_sources(
     AFR::secure_sockets::mcu_port
     INTERFACE "${AFR_MODULES_ABSTRACTIONS_DIR}/secure_sockets/freertos_plus_tcp/iot_secure_sockets.c"
-)
-
-target_include_directories(
-    AFR::secure_sockets::mcu_port
-    INTERFACE
-       "${AFR_MODULES_ABSTRACTIONS_DIR}/pkcs11/include"
-       "${AFR_3RDPARTY_DIR}/pkcs11"
-       "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/crypto/include"
 )
 
 # -------------------------------------------------------------------------------------------------
@@ -269,7 +266,7 @@ if(AFR_ENABLE_DEMOS OR AFR_ENABLE_TESTS)
     target_include_directories(
         ${exe_target}
         PUBLIC
-        "${AFR_MODULES_ABSTRACTIONS_DIR}/pkcs11/include"
+        "${AFR_MODULES_ABSTRACTIONS_DIR}/pkcs11/corePKCS11/source/include"
         "${AFR_3RDPARTY_DIR}/pkcs11"
         "${AFR_MODULES_FREERTOS_PLUS_DIR}/standard/crypto/include"
     )

@@ -54,5 +54,10 @@
 #define testrunnerFULL_OTA_PAL_ENABLED             0
 #define testrunnerFULL_POSIX_ENABLED               0
 #define testrunnerFULL_HTTPS_CLIENT_ENABLED        0
+#define testrunnerFULL_DEVICE_SHADOW_ENABLED       0
+#define testrunnerFULL_CORE_MQTT_ENABLED           0
+#define testrunnerFULL_CORE_MQTT_AWS_IOT_ENABLED   0
+#define testrunnerFULL_CORE_HTTP_ENABLED           0
+#define testrunnerFULL_CORE_HTTP_AWS_IOT_ENABLED   0
 
 #endif /* AWS_TEST_RUNNER_CONFIG_H */

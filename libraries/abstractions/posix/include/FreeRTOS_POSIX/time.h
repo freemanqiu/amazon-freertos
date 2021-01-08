@@ -1,5 +1,5 @@
 /*
- * FreeRTOS POSIX V1.1.3
+ * FreeRTOS POSIX V1.2.0
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -69,6 +69,26 @@
 /**@{ */
 #define TIMER_ABSTIME    0x01
 /**@} */
+
+#if !defined( posixconfigENABLE_TM ) || ( posixconfigENABLE_TM == 1 )
+
+/**
+ * @ingroup posix_datatypes_paramstructs
+ * @brief represents calendar time
+ */
+    struct tm
+    {
+        int tm_sec;   /**< Second. */
+        int tm_min;   /**< Minute. */
+        int tm_hour;  /**< Hour. */
+        int tm_mday;  /**< Day of month. */
+        int tm_mon;   /**< Month of year. */
+        int tm_year;  /**< Years since 1900. */
+        int tm_wday;  /**< Day of week. */
+        int tm_yday;  /**< Day of year. */
+        int tm_isdst; /**< Daylight Savings flag. */
+    };
+#endif /* if !defined( posixconfigENABLE_TM ) || ( posixconfigENABLE_TM == 1 ) */
 
 #if !defined( posixconfigENABLE_TIMESPEC ) || ( posixconfigENABLE_TIMESPEC == 1 )
 

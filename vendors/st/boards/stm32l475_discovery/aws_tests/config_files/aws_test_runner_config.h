@@ -46,6 +46,8 @@
 #define testrunnerFULL_GGD_HELPER_ENABLED          0
 #define testrunnerFULL_SHADOW_ENABLED              0
 #define testrunnerFULL_SHADOWv4_ENABLED            0
+#define testrunnerFULL_CORE_HTTP_ENABLED           0
+#define testrunnerFULL_CORE_HTTP_AWS_IOT_ENABLED   0
 #define testrunnerFULL_MQTTv4_ENABLED              0
 #define testrunnerFULL_PKCS11_ENABLED              0
 #define testrunnerFULL_CRYPTO_ENABLED              0
@@ -54,5 +56,8 @@
 #define testrunnerFULL_TLS_ENABLED                 0
 #define testrunnerFULL_POSIX_ENABLED               0
 #define testrunnerFULL_HTTPS_CLIENT_ENABLED        0
+#define testrunnerFULL_COMMON_IO_ENABLED           0
+#define testrunnerFULL_CLI_ENABLED                 0
+#define testrunnerFULL_DEVICE_SHADOW_ENABLED       0
 
 #endif /* AWS_TEST_RUNNER_CONFIG_H */
